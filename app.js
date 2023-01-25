@@ -1,13 +1,22 @@
 const http = require('http');
+const fs = require('fs')
 
 const server = http.createServer((req, res) => {
     console.log("request made")
 
     // set response
-    res.setHeader('content-type', 'text/plain');
+    res.setHeader('content-type', 'text/html');  // `text/plain` - usual text, `text/html` - html code
 
-    res.write('hello, cats');
-    res.end()
+    // read an html file
+    fs.readFile('./index.html', (err, data) => {
+        if (err) {
+            console.log(err);
+            res.end();
+        } else {
+            //res.write(data);
+            res.end(data);
+        }
+    })
 });
 
 server.listen(3000, 'localhost', () => {
