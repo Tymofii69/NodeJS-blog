@@ -1,54 +1,30 @@
-const http = require('http');
-const fs = require('fs');
-const _ = require('lodash')
+const express = require('express');
 
-const server = http.createServer((req, res) => {
-    
-    // lodash
-    const num = _.random(0,20);
-    console.log(num)
+const app = express()
 
-    const hello = _.once(() => {
-        console.log("hello")
-    });
+// listen for requests
+app.listen(3000);
 
-    hello();
-    hello();
-    // set header content type
-    res.setHeader('content-type', 'text/html');  // `text/plain` - usual text, `text/html` - html code
+app.get('/', (req, res) => {
+    //res.send('<p>home page</p>')
+    res.sendFile('/public/index.html', { root: __dirname });
+})
 
-    let path = './public/';
-    switch(req.url) {
-        case '/':
-            path += 'index.html';
-            res.statusCode = 200;
-            break;
-        case '/about':
-            path += 'about.html';
-            res.statusCode = 210;
-            break;
-        case '/about-me':
-            res.statusCode = 301;
-            res.setHeader('Location', '/about');
-            res.end();
-            break;
-        default:
-            path += '404.html'
-            res.statusCode = 404;
-    }
+app.get('/about', (req, res) => {
+    //res.send('<p>about page</p>')
+    res.sendFile('/public/about.html', { root: __dirname });
+})
 
-    // read an html file
-    fs.readFile(path, (err, data) => {
-        if (err) {
-            console.log(err);
-            res.end();
-        } else {
-            //res.write(data);
-            res.end(data);
-        }
-    })
-});
+//redirects
+app.get('/about-us', (req,res) => {
+    res.redirect('/about');
+})
 
-server.listen(3000, 'localhost', () => {
-    console.log("listening")
+// 404 page
+app.use((req, res) => {     
+    //be careful, use `.use` only in the end of request listeners, because it'll be triggered every listening period,
+    // so, after triggering this `.use` the next request getters won't be active
+
+    //res.status(404);  //you could use either this way, or the way below
+    res.status(404).sendFile('/public/404.html', { root: __dirname});
 })
