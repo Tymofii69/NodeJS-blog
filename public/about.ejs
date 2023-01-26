@@ -6,6 +6,7 @@
     <title>Node.js Introduction | <%= title %> </title>
 </head>
 <body>
+
     <nav>
         <div class="site-title">
             <a href="/"><h1>My Blog</h1></a>
@@ -18,19 +19,11 @@
         </ul>
     </nav>
 
-    <div class="blogs content">
-        <h2>All Blogs</h2>
-
-        <% if (blogs.length > 0) { %>
-            <% blogs.forEach(blog => { %>
-                
-                <h3 class="title"><%= blog.title %></h3>
-                <p class="snippet"><%= blog.snippet %></p>
-
-            <% }) %>
-        <% } else {%>
-            <p>There are no blogs to display...</p>
-        <% } %>
+    <div class="about content">
+        <h2>About Us</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
 </body>
 </html>
