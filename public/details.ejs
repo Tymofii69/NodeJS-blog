@@ -1,0 +1,36 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="details content">
+        <h2><%= blog.title %></h2>
+        <div class="content">
+            <p><%= blog.body %></p>
+        </div>
+        <a class="delete" data-doc="<%= blog._id %>">delete</a>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <script>
+        const trash = document.querySelector('a.delete');
+
+        trash.addEventListener('click', (e) => {
+            const endpoint = `/blogs/${trash.dataset.doc}`
+
+            fetch(endpoint, {
+                method: 'DELETE'
+            })
+                .then((response) => {   // the `response` here is json data with redirect, that we passed in app.delete request operator
+                    response.json() //this string returns another promise with data, that's why we use another .then
+                })
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch(err => console.log(err))
+        })
+    </script>
+</body>
+</html>
