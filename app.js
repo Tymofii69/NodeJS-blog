@@ -1,15 +1,62 @@
 const express = require('express');
+const morgan = require("morgan")
+const mongoose = require("mongoose")
+const Blog = require('./models/blog')
 
 const app = express()
 
-const ejs = require('ejs')
+// connect to mongodb
+const dbURI = 'mongodb+srv://qweasdzxc701:QQQIII68@cluster0.ghuryqb.mongodb.net/?retryWrites=true&w=majority'
+mongoose.set('strictQuery', true);
+mongoose.connect(dbURI)
+    .then((result) => app.listen(3000)) // it's begin to listen requests only when the database is loaded
+    .catch((err) => console.log(err));
+
+//mongoose and mongodb sandbox routes 
+app.get('/add-blog', (req, res) => {
+    const blog = new Blog({
+        title: 'new blog',
+        snippet: 'about my new blog',
+        body: 'more about my new blog',
+    });
+
+    blog.save()
+    .then((result) => {
+        res.send(result)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
+
+app.get("/all-blogs", (req, res) => {
+    Blog.find()
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => console.log(err))
+})
+
+app.get("/single-blog", (req, res) => {
+    Blog.findById('63d395a5edfb36688458644c')
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => console.log(err))
+})
 
 // register view engine
 app.set('view engine', 'ejs') //as default value, ejs and express uses 'views' folder
 app.set('views', 'public')    //that's why here we set the default folder to 'public' folder
 
 // listen for requests
-app.listen(3000);
+
+
+// middleware and static files
+app.use(express.static('static_files')); // this string is setting the folder named `static_files` as public, in other words, the files inside are accessible for frontend part of webpage
+app.use(morgan('dev')); // that's just to test using the lowest level middleware
+
+// next section
 
 app.get('/', (req, res) => {
     const blogs = [
