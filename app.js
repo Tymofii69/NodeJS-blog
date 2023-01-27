@@ -91,6 +91,10 @@ app.post('/blogs', (req, res) => {
         })
 })
 
+app.get('/blogs/create', (req, res) => {
+    res.render('create', { title: "New Blog" });
+})
+
 app.get('/blogs/:id', (req, res) => {   //it's neccessary to type the `/:id` with colon, otherwise, it'd be looking for the exact page with path `/blogs/id`
     const id = req.params.id;
     Blog.findById(id)
@@ -108,10 +112,6 @@ app.delete('/blogs/:id', (req, res) => {
             res.json({ redirect: '/blogs' })   //interesting, that we can't make res.redirect here, because we've used a JS frontend code to make a request
         })
         .catch(err => console.log(err))
-})
-
-app.get('/blogs/create', (req, res) => {
-    res.render('create', { title: "New Blog" });
 })
 
 // 404 page
