@@ -49,8 +49,6 @@ app.get("/single-blog", (req, res) => {
 app.set('view engine', 'ejs') //as default value, ejs and express uses 'views' folder
 app.set('views', 'public')    //that's why here we set the default folder to 'public' folder
 
-// listen for requests
-
 
 // middleware and static files
 app.use(express.static('static_files')); // this string is setting the folder named `static_files` as public, in other words, the files inside are accessible for frontend part of webpage
@@ -59,21 +57,23 @@ app.use(morgan('dev')); // that's just to test using the lowest level middleware
 // next section
 
 app.get('/', (req, res) => {
-    const blogs = [
-        {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    ]    
-    
-    //That's an old version with only Express:
-    //res.sendFile('/public/index.html', { root: __dirname });
-
-    //That's a updated version, using ejs and Express together:
-    res.render('index', { title: "Home", blogs });    // it's looking for the index.ejs in default folder, which we setted as 'public'
+    res.redirect('/blogs')
 })
 
 app.get('/about', (req, res) => {
     res.render('about', { title: "About" })
+})
+
+// blog routes
+
+app.get("/blogs", (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+    .then((result) => {
+        res.render('index', { title: 'All Blogs', blogs: result })
+    })
+    .catch((err) => {
+        console.log(err)
+    })
 })
 
 app.get('/blogs/create', (req, res) => {
