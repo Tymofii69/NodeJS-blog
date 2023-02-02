@@ -18,7 +18,7 @@ app.set('view engine', 'ejs') //as default value, ejs and express uses 'views' f
 
 
 // middleware and static files
-app.use(express.static('static_files')); // this string is setting the folder named `static_files` as public, in other words, the files inside are accessible for frontend part of webpage
+app.use(express.static('public')); // this string is setting the folder named `public` as public, in other words, the files inside are accessible for frontend part of webpage
 app.use(express.urlencoded({ extended: true })) // it takes the data from `create new blog` page, and passes it into object, that we can use in our `app.post` request object named `app.body`
 app.use(morgan('dev')); // that's just to test using the lowest level middleware
 
