@@ -3,7 +3,7 @@ const morgan = require("morgan")
 const mongoose = require("mongoose")
 const { render } = require('ejs');
 const blogRoutes = require('./routes/blogRoutes')
-import dbURI from './mongodb.js'
+const dbURI = require('./mongodb')
 
 const app = express()
 
@@ -15,7 +15,6 @@ mongoose.connect(dbURI)
 
 // register view engine
 app.set('view engine', 'ejs') //as default value, ejs and express uses 'views' folder
-app.set('views', 'public')    //that's why here we set the default folder to 'public' folder
 
 
 // middleware and static files
